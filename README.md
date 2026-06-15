@@ -8,13 +8,13 @@ A Unix-like kernel implemented in C based on the Weenix project from Brown Unive
 
 ### K1 - Process & Thread Management
 
-- Process lifecycle — creation, destruction, parent-child relationships, orphan reparenting to init
-- Threads — kernel thread creation, cancellation, clean exit
-- Cooperative scheduler — FIFO run queue; threads run until they voluntarily yield or sleep
-- Wait queues — threads sleep on events and wake on signal
-- Mutexes — lock/unlock with wait queue-based sleeping; direct handoff to next waiter on unlock
-- Interrupt masking — used IPL_HIGH instead of mutex to protect run queue from interrupt handlers (interrupt handlers can't sleep, so they can't acquire a mutex)
-- Clean shutdown — thread cancellation, proc_kill_all, graceful kernel halt
+- Process lifecycle - creation, destruction, parent-child relationships, orphan reparenting to init
+- Threads - kernel thread creation, cancellation, clean exit
+- Cooperative scheduler - FIFO run queue; threads run until they voluntarily yield or sleep
+- Wait queues - threads sleep on events and wake on signal
+- Mutexes - lock/unlock with wait queue-based sleeping; direct handoff to next waiter on unlock
+- Interrupt masking - used IPL_HIGH instead of mutex to protect run queue from interrupt handlers (interrupt handlers can't sleep, so they can't acquire a mutex)
+- Clean shutdown - thread cancellation, proc_kill_all, graceful kernel halt
 
 ### K2 - Virtual File System
 
