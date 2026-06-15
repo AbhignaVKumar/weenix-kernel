@@ -6,7 +6,7 @@ A Unix-like kernel implemented in C based on the Weenix project from Brown Unive
 
 ## What I Implemented
 
-### K1 — Process & Thread Management
+### K1 - Process & Thread Management
 
 - Process lifecycle — creation, destruction, parent-child relationships, orphan reparenting to init
 - Threads — kernel thread creation, cancellation, clean exit
@@ -16,23 +16,23 @@ A Unix-like kernel implemented in C based on the Weenix project from Brown Unive
 - Interrupt masking — used IPL_HIGH instead of mutex to protect run queue from interrupt handlers (interrupt handlers can't sleep, so they can't acquire a mutex)
 - Clean shutdown — thread cancellation, proc_kill_all, graceful kernel halt
 
-### K2 — Virtual File System
+### K2 - Virtual File System
 
-- VFS abstraction — vnode operations dispatched to filesystem-specific implementations
-- Path resolution — tokenize path, walk directory tree component by component
-- Vnode reference counting — prevents use-after-free when multiple processes share the same file
-- Ordered vnode locking — always lock by inode number to prevent deadlocks
-- Syscalls — read, write, close, dup, dup2, mkdir, rmdir, unlink, link, rename, stat, chdir, lseek, getdent, mknod
+- VFS abstraction - vnode operations dispatched to filesystem-specific implementations
+- Path resolution - tokenize path, walk directory tree component by component
+- Vnode reference counting - prevents use-after-free when multiple processes share the same file
+- Ordered vnode locking - always lock by inode number to prevent deadlocks
+- Syscalls - read, write, close, dup, dup2, mkdir, rmdir, unlink, link, rename, stat, chdir, lseek, getdent, mknod
 
-### K3 — Virtual Memory
+### K3 - Virtual Memory
 
-- Per-process address spaces — each process has its own page table
-- vmmap/vmarea — data structures tracking mapped regions per process
-- Anonymous memory objects — zero-filled pages on demand for heap and stack
-- Shadow objects — implement copy-on-write; intercept writes and store private page copies per process
-- Copy-on-write fork — parent and child share physical pages marked read-only; page fault triggers private copy of only the written page
-- TLB flush after fork — invalidate stale cached translations after marking pages read-only
-- vmmap_read/write — kernel-to-user memory access primitives
+- Per-process address spaces - each process has its own page table
+- vmmap/vmarea - data structures tracking mapped regions per process
+- Anonymous memory objects - zero-filled pages on demand for heap and stack
+- Shadow objects - implement copy-on-write; intercept writes and store private page copies per process
+- Copy-on-write fork - parent and child share physical pages marked read-only; page fault triggers private copy of only the written page
+- TLB flush after fork - invalidate stale cached translations after marking pages read-only
+- vmmap_read/write - kernel-to-user memory access primitives
 
 ## Architecture
 
@@ -64,13 +64,13 @@ Hardware (x86-64, QEMU)
 
 ## Key Design Decisions
 
-**Cooperative scheduling** — no timer interrupts, threads switch only when they yield or block.
+**Cooperative scheduling** - no timer interrupts, threads switch only when they yield or block.
 
-**Interrupt masking over mutex for run queue** — interrupt handlers modify the run queue but can't sleep, so they can't acquire a mutex. IPL_HIGH blocks all interrupts during critical sections instead.
+**Interrupt masking over mutex for run queue** - interrupt handlers modify the run queue but can't sleep, so they can't acquire a mutex. IPL_HIGH blocks all interrupts during critical sections instead.
 
-**Ordered vnode locking** — when two vnodes must be locked simultaneously, always lock in inode number order to prevent circular wait deadlock.
+**Ordered vnode locking** - when two vnodes must be locked simultaneously, always lock in inode number order to prevent circular wait deadlock.
 
-**Copy-on-write shadow chain** — each shadow object tracks only its private pages. On write fault, copy the page into the shadow's private list. Parent and child never interfere.
+**Copy-on-write shadow chain** - each shadow object tracks only its private pages. On write fault, copy the page into the shadow's private list. Parent and child never interfere.
 
 ## Build & Run
 
